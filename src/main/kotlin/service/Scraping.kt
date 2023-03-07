@@ -18,6 +18,9 @@ class Scraping {
         val driver: WebDriver = ChromeDriver(options)
         // Webページにアクセス
         driver.get("https://note.com/kou_isk")
+        // TODO 「記事をもっと見る」ボタンをクリックできるようにする
+        driver.findElement(By.xpath("/html/body/div/div/div/div[1]/main/div/div[4]/div[2]/div/div/div/section[3]/div/div/div/button"))
+            .click()
         var noteList = driver.findElement(By.className("o-noteList")).findElements(By.tagName("a"))
         var text = ""
         // TODO スクレイピングのメソッドが異常終了しないように修正する
