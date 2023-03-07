@@ -15,6 +15,8 @@ dependencies {
     testImplementation(kotlin("test"))
     implementation("com.atilika.kuromoji:kuromoji-ipadic:0.9.0")
     implementation("com.kennycason:kumo-core:1.17")
+    implementation("org.seleniumhq.selenium:selenium-java:3.141.59")
+    implementation("org.seleniumhq.selenium:selenium-support:3.141.59")
 }
 
 tasks.test {
