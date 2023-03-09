@@ -1,46 +1,77 @@
 package service
 
 import org.openqa.selenium.By
+import org.openqa.selenium.JavascriptExecutor
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.chrome.ChromeDriver
-import org.openqa.selenium.chrome.ChromeOptions
+import java.io.BufferedWriter
+import java.io.File
+
 
 class Scraping {
+    private val driver: WebDriver = ChromeDriver()
     fun getTextFromMyNote(): String {
         // 環境変数にchromedriverのパスを設定
         System.setProperty("webdriver.chrome.driver", "/Users/isakakou/Documents/workSpace/Word_Cloud/chromedriver")
 
-        val options = ChromeOptions().apply {
-            // headlessモードにする場合はここで指定
-            addArguments("--headless")
-        }
-
-        val driver: WebDriver = ChromeDriver(options)
+//        val options = ChromeOptions().apply {
+//            // headlessモードにする場合はここで指定
+//            addArguments("--headless")
+//        }
         // Webページにアクセス
         driver.get("https://note.com/kou_isk")
         // TODO 「記事をもっと見る」ボタンをクリックできるようにする
-        driver.findElement(By.xpath("/html/body/div/div/div/div[1]/main/div/div[4]/div[2]/div/div/div/section[3]/div/div/div/button"))
-            .click()
-        var noteList = driver.findElement(By.className("o-noteList")).findElements(By.tagName("a"))
+        Thread.sleep(1000)
+
+        Thread.sleep(1000)
+        loadMoreContent()
+        var noteList = driver.findElement(By.className("o-noteList"))
+            .findElements(By.className("m-largeNoteWrapper__link"))
+        println(noteList.size)
         var text = ""
         // TODO スクレイピングのメソッドが異常終了しないように修正する
         for (i in 0..noteList.size) {
             driver.get("https://note.com/kou_isk")
             Thread.sleep(1000)
-            noteList = driver.findElement(By.className("o-noteList")).findElements(By.tagName("a"))
+            loadMoreContent()
+            noteList = driver.findElement(By.className("o-noteList"))
+                .findElements(By.className("m-largeNoteWrapper__link"))
             Thread.sleep(3000)
             noteList[i].click()
             println("==============================")
             Thread.sleep(3000)
-            driver.findElements(By.tagName("p")).forEach { p ->
-                text += p.text.trimIndent().trim().replace("\\n", "")
-                println(p.text.trimIndent().trim().replace("\\n", ""))
-            }
+            driver.findElement(By.className("note-common-styles__textnote-body")).findElements(By.tagName("p"))
+                .forEach { p ->
+                    text += p.text.trimIndent().trim().replace("\\n", "")
+                    println(p.text.trimIndent().trim().replace("\\n", ""))
+                }
             Thread.sleep(3000)
+            val file = File("/Users/isakakou/Desktop/名称未設定フォルダ/note_text.txt")
+            file.writeText(text, Charsets.UTF_8)
         }
 
         // ブラウザを閉じる
         driver.close()
         return text
+    }
+
+    private fun loadMoreContent() {
+        var element = driver.findElement(
+            By.className("o-loadMoreButton")
+        )
+        while (element != null) {
+            (driver as JavascriptExecutor).executeScript(
+                "arguments[0].scrollIntoView(true);",
+                element
+            )
+            driver.executeScript("javascript:window.scrollBy(0,-80)") //scrollIntoView(true)だけだとスクロールしすぎるので、少し戻す
+            try {
+                element.click()
+            } catch (e: Exception) {
+                println(e)
+                break
+            }
+            Thread.sleep(2000)
+        }
     }
 }
