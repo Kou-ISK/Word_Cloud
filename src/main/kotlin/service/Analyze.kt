@@ -29,6 +29,10 @@ class Analyze(inputText: String) {
         return tokens.filter { it.partOfSpeechLevel1.equals("連体詞") }.map { it.baseForm }
     }
 
+    fun segment(): List<String> {
+        return tokens.map { it.baseForm }
+    }
+
     fun countFrequency(wordList: List<String>): MutableMap<String, Int> {
         val wordFrequencyMap: MutableMap<String, Int> = HashMap()
         for (s in wordList) {

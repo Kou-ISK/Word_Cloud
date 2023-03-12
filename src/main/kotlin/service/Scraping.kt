@@ -19,23 +19,23 @@ class Scraping {
 //        }
         // Webページにアクセス
         driver.get("https://note.com/kou_isk")
-        // TODO 「記事をもっと見る」ボタンをクリックできるようにする
         Thread.sleep(1000)
         loadMoreContent()
-        var noteList = driver.findElement(By.className("o-noteList"))
-            .findElements(By.className("m-largeNoteWrapper__link"))
-        println(noteList.size)
+        val noteSize = driver.findElement(By.className("o-noteList"))
+            .findElements(By.className("m-largeNoteWrapper__link")).size
+        println(noteSize)
         var text = ""
         val file = File("/Users/isakakou/Desktop/名称未設定フォルダ/note_text.txt")
         // TODO スクレイピングのメソッドが異常終了しないように修正する
-        for (i in 0..noteList.size) {
+        var i = 0
+        while (i < noteSize) {
             driver.get("https://note.com/kou_isk")
-            Thread.sleep(2000)
-            loadMoreContent()
-            println(i)
-            noteList = driver.findElement(By.className("o-noteList"))
+            Thread.sleep(1000)
+            if (i > 11) loadMoreContent()
+            println("$i 番目")
+            val noteList = driver.findElement(By.className("o-noteList"))
                 .findElements(By.className("m-largeNoteWrapper__link"))
-            Thread.sleep(2000)
+            Thread.sleep(4000)
             noteList[i].click()
             println("==============================")
             Thread.sleep(2000)
@@ -49,6 +49,8 @@ class Scraping {
                 file.writeText(text, Charsets.UTF_8)
             } catch (e: Exception) {
                 println(e)
+            } finally {
+                i += 1
             }
         }
 
@@ -58,7 +60,7 @@ class Scraping {
     }
 
     private fun loadMoreContent() {
-        var element = driver.findElement(
+        val element = driver.findElement(
             By.className("o-loadMoreButton")
         )
         while (element != null) {
@@ -69,11 +71,12 @@ class Scraping {
             driver.executeScript("javascript:window.scrollBy(0,-80)") //scrollIntoView(true)だけだとスクロールしすぎるので、少し戻す
             try {
                 element.click()
+                Thread.sleep(2000)
             } catch (e: Exception) {
                 println(e)
                 break
             }
-            Thread.sleep(2000)
         }
+        Thread.sleep(3000)
     }
 }
