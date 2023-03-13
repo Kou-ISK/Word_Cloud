@@ -36,7 +36,8 @@ class Scraping {
             val noteList = driver.findElement(By.className("o-noteList"))
                 .findElements(By.className("m-largeNoteWrapper__link"))
             Thread.sleep(4000)
-            noteList[i].click()
+            val element = noteList[i]
+            (driver as JavascriptExecutor).executeScript("arguments[0].click();", element)
             println("==============================")
             Thread.sleep(2000)
             try {
