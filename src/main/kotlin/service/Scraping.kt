@@ -4,32 +4,43 @@ import org.openqa.selenium.By
 import org.openqa.selenium.JavascriptExecutor
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.chrome.ChromeDriver
+import org.openqa.selenium.chrome.ChromeOptions
+import properties.Properties.Companion.NOTE_ROOT_URI
+import properties.Properties.Companion.NOTE_USER_NAME
+import properties.Properties.Companion.OUTPUT_FILE_PATH
 import java.io.File
 
 
 class Scraping {
-    private val driver: WebDriver = ChromeDriver()
-    fun getTextFromMyNote(): String {
+    private lateinit var driver: WebDriver
+    private val NOTE_URI = NOTE_ROOT_URI + NOTE_USER_NAME
+
+    private fun driverSetting() {
         // 環境変数にchromedriverのパスを設定
         System.setProperty("webdriver.chrome.driver", "/Users/isakakou/Documents/workSpace/Word_Cloud/chromedriver")
 
-//        val options = ChromeOptions().apply {
-//            // headlessモードにする場合はここで指定
-//            addArguments("--headless")
-//        }
+        val options = ChromeOptions().apply {
+            // headlessモードにする場合はここで指定
+            addArguments("--headless")
+        }
+        driver = ChromeDriver(options)
+    }
+
+    fun getTextFromMyNote(): String {
+        driverSetting()
         // Webページにアクセス
-        driver.get("https://note.com/kou_isk")
+        driver.get(NOTE_URI)
         Thread.sleep(1000)
         loadMoreContent()
         val noteSize = driver.findElement(By.className("o-noteList"))
             .findElements(By.className("m-largeNoteWrapper__link")).size
         println(noteSize)
         var text = ""
-        val file = File("/Users/isakakou/Desktop/名称未設定フォルダ/note_text.txt")
+        val file = File(OUTPUT_FILE_PATH)
         // TODO スクレイピングのメソッドが異常終了しないように修正する
         var i = 0
         while (i < noteSize) {
-            driver.get("https://note.com/kou_isk")
+            driver.get(NOTE_URI)
             Thread.sleep(1000)
             if (i > 11) loadMoreContent()
             println("$i 番目")
@@ -69,7 +80,7 @@ class Scraping {
                 "arguments[0].scrollIntoView(true);",
                 element
             )
-            driver.executeScript("javascript:window.scrollBy(0,-80)") //scrollIntoView(true)だけだとスクロールしすぎるので、少し戻す
+            (driver as JavascriptExecutor).executeScript("javascript:window.scrollBy(0,-80)") //scrollIntoView(true)だけだとスクロールしすぎるので、少し戻す
             try {
                 element.click()
                 Thread.sleep(2000)
