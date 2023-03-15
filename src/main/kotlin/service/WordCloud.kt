@@ -7,6 +7,7 @@ import com.kennycason.kumo.bg.RectangleBackground
 import com.kennycason.kumo.font.scale.LinearFontScalar
 import com.kennycason.kumo.image.AngleGenerator
 import com.kennycason.kumo.palette.LinearGradientColorPalette
+import properties.Properties.Companion.WORD_CLOUD_OUTPUT_PATH
 import java.awt.Color
 import java.awt.Dimension
 
@@ -37,6 +38,6 @@ class WordCloud(wordFrequencyMap: MutableMap<String, Int>) {
 
         wordCloud.setFontScalar(LinearFontScalar(30, 300)) // (6)
         wordCloud.build(wordFrequencies) // (7)
-        wordCloud.writeToFile("/Users/isakakou/Desktop/名称未設定フォルダ/word_cloud.png")
+        wordCloud.writeToFile(WORD_CLOUD_OUTPUT_PATH)
     }
 }

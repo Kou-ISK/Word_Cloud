@@ -17,12 +17,24 @@ class Analyze(inputText: String) {
         return tokens.filter { it.partOfSpeechLevel1.equals("名詞") }.map { it.baseForm }
     }
 
+    fun getNoun2(): List<String> {
+        return tokens.map { it.partOfSpeechLevel3 }.distinct()
+    }
+
+    fun getAssociation(): List<String> {
+        return tokens.filter { it.partOfSpeechLevel3.equals("組織") }.map { it.surface }
+    }
+
     fun getVerb(): List<String> {
         return tokens.filter { it.partOfSpeechLevel1.equals("動詞") }.map { it.baseForm }
     }
 
     fun getAdjective(): List<String> {
         return tokens.filter { it.partOfSpeechLevel1.equals("形容詞") }.map { it.baseForm }
+    }
+
+    fun getAdverb(): List<String> {
+        return tokens.filter { it.partOfSpeechLevel1.equals("助動詞") }.map { it.baseForm }
     }
 
     fun getAdnominal(): List<String> {
