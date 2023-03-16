@@ -32,33 +32,10 @@ class Analyze(inputText: String) {
             }
 
             else -> {
+                println(part)
                 return null
             }
         }
-    }
-
-    fun getNoun(): List<String> {
-        return tokens.filter { it.partOfSpeechLevel1.equals("名詞") }.map { it.baseForm }
-    }
-
-    fun getAssociation(): List<String> {
-        return tokens.filter { it.partOfSpeechLevel3.equals("組織") }.map { it.surface }
-    }
-
-    fun getVerb(): List<String> {
-        return tokens.filter { it.partOfSpeechLevel1.equals("動詞") }.map { it.baseForm }
-    }
-
-    fun getAdjective(): List<String> {
-        return tokens.filter { it.partOfSpeechLevel1.equals("形容詞") }.map { it.baseForm }
-    }
-
-    fun getAdverb(): List<String> {
-        return tokens.filter { it.partOfSpeechLevel1.equals("助動詞") }.map { it.baseForm }
-    }
-
-    fun getAdnominal(): List<String> {
-        return tokens.filter { it.partOfSpeechLevel1.equals("連体詞") }.map { it.baseForm }
     }
 
     fun segment(): List<String> {
@@ -68,9 +45,11 @@ class Analyze(inputText: String) {
     fun countFrequency(wordList: List<String>): MutableMap<String, Int> {
         val wordFrequencyMap: MutableMap<String, Int> = HashMap()
         for (s in wordList) {
-            var count = wordFrequencyMap[s]
-            if (count == null) count = 0
-            wordFrequencyMap[s] = count + 1
+            if (s != "*") {
+                var count = wordFrequencyMap[s]
+                if (count == null) count = 0
+                wordFrequencyMap[s] = count + 1
+            }
         }
         return wordFrequencyMap
     }

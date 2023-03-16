@@ -11,8 +11,6 @@ fun main(args: Array<String>) {
     val inputText =
         File(INPUT_FILE_PATH).readText().trimIndent().trim().replace("\\n", "")
     val analyze = Analyze(inputText)
-    //println(analyze.getThisPart(args.get(0)))
-    println(analyze.getAssociation())
-    val frequencyMap = analyze.countFrequency(analyze.getNoun())
+    val frequencyMap = analyze.countFrequency(analyze.getThisPart("名詞") ?: throw Exception())
     WordCloud(frequencyMap).draw()
 }
