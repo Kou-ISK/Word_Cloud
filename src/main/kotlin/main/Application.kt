@@ -11,6 +11,9 @@ fun main(args: Array<String>) {
     val inputText =
         File(INPUT_FILE_PATH).readText().trimIndent().trim().replace("\\n", "")
     val analyze = Analyze(inputText)
-    val frequencyMap = analyze.countFrequency(analyze.getThisPart("名詞") ?: throw Exception())
+    //指定したワードをword cloudから除外
+    val exclusionList = listOf("こと", "の")
+    val wordList = analyze.exclude(analyze.getThisPart("名詞") ?: throw Exception(), exclusionList)
+    val frequencyMap = analyze.countFrequency(wordList)
     WordCloud(frequencyMap).draw()
 }

@@ -5,6 +5,7 @@ import org.openqa.selenium.JavascriptExecutor
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.chrome.ChromeDriver
 import org.openqa.selenium.chrome.ChromeOptions
+import properties.Properties.Companion.CHROME_DRIVER_PATH
 import properties.Properties.Companion.NOTE_ROOT_URI
 import properties.Properties.Companion.NOTE_USER_NAME
 import properties.Properties.Companion.OUTPUT_FILE_PATH
@@ -17,7 +18,7 @@ class Scraping {
 
     private fun driverSetting() {
         // 環境変数にchromedriverのパスを設定
-        System.setProperty("webdriver.chrome.driver", "/Users/isakakou/Documents/workSpace/Word_Cloud/chromedriver")
+        System.setProperty("webdriver.chrome.driver", CHROME_DRIVER_PATH)
 
         val options = ChromeOptions().apply {
             // headlessモードにする場合はここで指定

@@ -31,8 +31,8 @@ class WordCloud(wordFrequencyMap: MutableMap<String, Int>) {
         wordCloud.setBackgroundColor(Color.white) // (4)
         wordCloud.setColorPalette(
             LinearGradientColorPalette(
-                Color.BLUE, Color.GREEN,
-                30,
+                Color.RED, Color.BLUE, Color.GREEN,
+                10, 10
             )
         ) // (5)
 
