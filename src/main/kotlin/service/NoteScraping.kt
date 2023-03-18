@@ -2,33 +2,18 @@ package service
 
 import org.openqa.selenium.By
 import org.openqa.selenium.JavascriptExecutor
-import org.openqa.selenium.WebDriver
-import org.openqa.selenium.chrome.ChromeDriver
-import org.openqa.selenium.chrome.ChromeOptions
-import properties.Properties.Companion.CHROME_DRIVER_PATH
-import properties.Properties.Companion.NOTE_ROOT_URI
-import properties.Properties.Companion.NOTE_USER_NAME
+import properties.DriverProperties
+import properties.DriverProperties.Companion.driver
+import properties.Properties
 import properties.Properties.Companion.OUTPUT_FILE_PATH
 import java.io.File
 
 
-class Scraping {
-    private lateinit var driver: WebDriver
-    private val NOTE_URI = NOTE_ROOT_URI + NOTE_USER_NAME
-
-    private fun driverSetting() {
-        // 環境変数にchromedriverのパスを設定
-        System.setProperty("webdriver.chrome.driver", CHROME_DRIVER_PATH)
-
-        val options = ChromeOptions().apply {
-            // headlessモードにする場合はここで指定
-            addArguments("--headless")
-        }
-        driver = ChromeDriver(options)
-    }
+class NoteScraping(noteUserName: String) {
+    private val NOTE_URI = Properties.NOTE_ROOT_URI + noteUserName
 
     fun getTextFromMyNote(): String {
-        driverSetting()
+        DriverProperties().driverSetting()
         // Webページにアクセス
         driver.get(NOTE_URI)
         Thread.sleep(1000)

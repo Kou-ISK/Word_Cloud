@@ -13,7 +13,7 @@ class Analyze(inputText: String) {
         tokens = tokenizer.tokenize(inputText)
     }
 
-    fun getThisPart(part: String): List<String>? {
+    fun getThisPart(part: String): List<String> {
         return when (part) {
             "名詞", "助詞", "助動詞", "動詞", "記号", "連体詞", "形容詞", "副詞", "接頭詞", "接続詞", "感動詞" -> {
                 tokens.filter { it.partOfSpeechLevel1.equals(part) }.map { it.surface }
@@ -44,8 +44,7 @@ class Analyze(inputText: String) {
             }
 
             else -> {
-                println(part)
-                return null
+                throw Exception("$part は不正な値です")
             }
         }
     }
