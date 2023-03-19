@@ -9,9 +9,9 @@ import java.io.File
 
 fun main(args: Array<String>) {
 //    val inputText = NoteScraping("kou_isk").getTextFromMyNote()
-    WebNewsScraping().getFromYahooNews()
-    val inputText =
-        File(INPUT_FILE_PATH).readText().trimIndent().trim().replace("\\n", "")
+    val inputText = WebNewsScraping().getFromYahooNews()
+//    val inputText =
+//        File(INPUT_FILE_PATH).readText().trimIndent().trim().replace("\\n", "")
     val analyze = Analyze(inputText)
     //指定したワードをword cloudから除外
     val exclusionList = listOf("こと", "の")
